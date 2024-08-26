@@ -1,21 +1,28 @@
 #### node 版本
+
 - v20.14.0 | v20.9.0
 
 #### npm 版本
+
 - v10.1.0
 
-#### python版本
+#### python 版本
+
 - v3.6.15
 
-#### 为什么采用sqlite3数据库？
+#### 为什么采用 sqlite3 数据库？
+
 - 便于数据同步，在线模式下，可以从服务器上下载数据库文件
 - 在离线模式下，服务将连接到本地数据库
 
-#### 为什么前、后端采用ipc通信
-- 考虑到离线模式下无网络环境，通过ipc通道进行前后端通信
+#### 为什么前、后端采用 ipc 通信
 
-#### 注意（强烈推荐使用pnpm）
+- 考虑到离线模式下无网络环境，通过 ipc 通道进行前后端通信
+
+#### 注意（强烈推荐使用 pnpm）
+
 - 使用`pnpm`安装第三方包时，在执行时可能报错<font color="red">未指定全局包的安装路径，请按如下命令以此执行</font>
+
 ```
 pnpm config set store-dir       D:\Tools\pnpm.pnpm-store
 pnpm config set state-dir       D:\Tools\pnpm\state
@@ -23,49 +30,72 @@ pnpm config set global-dir      D:\Tools\pnpm\store
 pnpm config set global-bin-dir  D:\Tools\pnpm
 pnpm config set cache-dir       D:\Tools\pnpm\cache
 ```
+
 #### 全局安装
+
 ```
-{*} npm install -g @nestjs/cli@10.4.2 or pnpm add -g @nestjs/cli@10.4.2
-{*} npm install -g electron-rebuild@3.2.9 or pnpm add -g electron-rebuild@3.2.9
-{*} npm install -g typeorm-model-generator@0.4.6 or pnpm add -g typeorm-model-generator@0.4.6
-{*} npm install -g node-gyp@10.2.0 or pnpm add -g node-gyp@10.2.0
-{*} npm install -g --production windows-build-tools or pnpm add -g --production windows-build-tools
+{*} pnpm add -g @nestjs/cli@10.4.2 或 npm install -g @nestjs/cli@10.4.2 or
+{*} pnpm add -g electron-rebuild@3.2.9 或 npm install -g electron-rebuild@3.2.9
+{*} pnpm add -g typeorm-model-generator@0.4.6 或 npm install -g typeorm-model-generator@0.4.6
+{*} pnpm add -g node-gyp@10.2.0 或 npm install -g node-gyp@10.2.0
+{*} pnpm add -g --production windows-build-tools  或  npm install -g --production windows-build-tools 或
 {*} npm install -g pnpm@9.6.0
 ```
+
 <font color='red'>注意：安装 windows-build-tools，需要安装 c++编译环境</font>
-<font color="red">注意：如果安装sqlite3,里面内置了node-gyp@8.4.1</font>
+<font color="red">注意：如果安装 sqlite3,里面内置了node-gyp@8.4.1</font>
+
 #### 初始化
+
 ```
-npm install
-npm run sqlite3:rebuild        # 编译为适配当前环境的qlite
+pnpm install
+pnpm run sqlite3:rebuild        # 编译为适配当前环境的qlite
 ```
 
 #### 启动
+
 ```
-npm run dev
+pnpm run dev 或npm run dev
 ```
 
 #### 打包
+
 ```
-npm run build
+pnpm run build 或 npm run build
 ```
 
 #### 命令解释、
+
 ```
-  "dev": "dsr dev", // 开发环境
-  "build": "rimraf dist && dsr build", // 打包
-  "postinstall": "./node_modules/electron-builder/install-app-deps.js", // 依赖检测 electron与electron-builder版本是否匹配
-  "res": "cd ./packages/backend/src/common/services && nest g --no-spec res", // 自动生成service、controller、module
-  "db": "typeorm-model-generator --noConfig true -d ./packages/backend/src/db/db.sqlite3 -e sqlite -o ./packages/backend/src/common/entities --ce pascal --cp camel --cf none", // 自动生成实体类
-  "sqlite3:rebuild": "cd ./packages/backend && electron-rebuild -f -w sqlite3" // 重新编译sqlite3模块
+  // 开发环境
+  "dev": "rimraf dist && vite",
+  //调试模式
+  "debug": "rimraf dist && vite -- --dsb-debug",
+
+  // 打包
+  "build": "rimraf dist && vue-tsc && vite build",
+
+  // 依赖检测 electron与electron-builder版本是否匹配
+  "postinstall": "electron-builder install-app-deps"，
+
+  // 自动生成service、controller、module, 使用方式：
+  // 使用方式：npm run res -- test
+  "res": "cd ./src/main/nest/services && nest g --no-spec res",
+
+  // 自动生成实体类
+  "db": "typeorm-model-generator --noConfig true -d ./static/db/db.sqlite3 -e sqlite -o ./src/main/nest/entities --ce pascal --cp camel --cf none", 
+  
+  // 重新编译sqlite3模块
+  "sqlite3:rebuild": "cd ./src/main && electron-rebuild -f -w sqlite3"
 ```
 
 #### 访问
+
 [swagger：http://localhost:3000/api-docs#/](http://localhost:3000/api-docs#/ "swagger地址")
 [接口访问：http://localhost:3000/v1.0/接口路径](http://localhost:3000/v1.0/接口路径)
 
-
 #### 举个栗子？
+
 ```
 #preload.ts
 contextBridge.exposeInMainWorld(
@@ -104,18 +134,21 @@ const onSignIn = async () => {
 }
 ```
 
-#### nestjs生命周期
+#### nestjs 生命周期
+
 ![system-framework](/static/frameworrk/nestjs.png "系统架构图")
 
-
 #### 系统架构
+
 ![system-framework](/static/frameworrk/system-framework.png "系统架构图")
 
-#### 数据同步
+#### 数据同步实现逻辑
+
 ![offline](/static/frameworrk/offline.png "数据同步-在线模式")
 ![online](/static/frameworrk/sync.png "数据同步-离线模式")
 
 #### 目录结构
+
 ```
 └── .vscode                                     # vscode 配置文件
 ├──  dist/                                      # 生产环境/开发环境打包后的文件
@@ -201,9 +234,10 @@ const onSignIn = async () => {
 ```
 
 #### 其他说明
+
 - package.json:
   - // "@typescript-eslint/eslint-plugin": "^5.46.0",
-	- // "@typescript-eslint/parser": "^5.46.0",
-	- // "eslint-plugin-vue": "^9.8.0",
+  - // "@typescript-eslint/parser": "^5.46.0",
+  - // "eslint-plugin-vue": "^9.8.0",
 
 D:\Tools\nvm\v20.9.0\node_modules\pnpm\bin\pnpm.cjs

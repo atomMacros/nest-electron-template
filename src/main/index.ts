@@ -1,16 +1,25 @@
 import { NestFactory } from "@nestjs/core";
 import { MicroserviceOptions } from "@nestjs/microservices";
-import { app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray } from "electron";
+import {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  Menu,
+  nativeImage,
+  Tray,
+} from "electron";
 import { ElectronIpcTransport } from "@doubleshot/nest-electron";
 import { AppModule } from "./app.module";
-import { AppModule as ApiModule } from "./tcp/app.module";
+import { AppModule as ApiModule } from "./nest/app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { VersioningType } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { logger } from "./tcp/utils/middleWave/logger/logger.middleWave";
-import { HttpCatchFilter } from "./tcp/utils/Filter/HttpCatchFilter";
-import TransformInterceptor from "./tcp/utils/interceptor/transform.interceptor";
-import ValidatePipe from "./tcp/utils/pipe/validate.pipe";
+import { logger } from "./nest/utils/middleWave/logger/logger.middleWave";
+import { HttpCatchFilter } from "./nest/utils/Filter/HttpCatchFilter";
+import TransformInterceptor from "./nest/utils/interceptor/transform.interceptor";
+import ValidatePipe from "./nest/utils/pipe/validate.pipe";
+import { utilityProcess, MessageChannelMain } from "electron";
+import path from "path";
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 
 async function electronAppInit() {
@@ -31,9 +40,7 @@ async function electronAppInit() {
       });
     }
   }
-  await app.whenReady().then((res) => {
-   
-  });
+  await app.whenReady().then((res) => {});
   const nestApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
@@ -73,10 +80,28 @@ const nestApp = async function () {
   await nestapp.listen(3000);
 };
 
+const initProcess = function () {
+  const { port1, port2 } = new MessageChannelMain();
+  const child = utilityProcess.fork('src/main/child-process.js');
+  child.on("spawn", () => {
+    child.postMessage({ message: "hello" }, [port1]);
+  });
+
+  port2.on("message", (e) => {
+    console.log("port receive:", e.data);
+    port2.postMessage("I receive your messages:");
+  });
+  port2.start();
+  child.on("message", (e) => {
+    console.log("接收到消息了：", e);
+  });
+};
+
 async function bootstrap() {
   try {
     await electronAppInit();
     await nestApp();
+    initProcess()
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);

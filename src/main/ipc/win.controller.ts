@@ -11,11 +11,12 @@ export class WinController {
 
   @IpcHandle("show")
   async show() {
-    this.win_loading.hide();
-    this.win_loading.close();
+    // NOTE(2024-08-26 11:06:06 谭人杰): 此处加一下判断，因为app.vue 每次刷新时，win_loading在应用启动时，被关闭了， 所以这里win_loading不需要再次关闭
+    if(!this.win_loading.isDestroyed()) {
+      this.win_loading.hide();
+      this.win_loading.close();
+    }
     if (!this.win.isDestroyed()) {
-      console.log(12312323);
-      
       this.win.show();
     }
   }

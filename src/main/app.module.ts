@@ -34,7 +34,9 @@ const initLoadingWindow = function () {
     win_loading.setAlwaysOnTop(false);
   });
   win_loading.on("closed", () => {
-    win_loading.removeAllListeners();
+    console.log('loseed==============');
+    
+    // win_loading.removeAllListeners();
   });
   win_loading.loadFile(URL);
   return win_loading;

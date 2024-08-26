@@ -28,10 +28,12 @@ const config = {
     createDesktopShortcut: true, // 创建桌面图标
     createStartMenuShortcut: true, // 创建开始菜单图标
     shortcutName: "HelmsMan", //安装后 软件名称
+    allowElevation: true, // 允许安装时，请求提升权限
     // "include": "build/script/installer.nsh", // 包含的自定义nsis脚本 这个对于构建需求严格得安装过程相当有用。
   },
   win: {
     icon: "static/icons/icon.png",
+    requestedExecutionLevel: 'requireAdministrator', //highestAvailable 可用的最高权限 或 requireAdministrator 管理员权限
     target: [
       {
         target: "nsis",

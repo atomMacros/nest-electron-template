@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { IpcHandle } from '@doubleshot/nest-electron';
-import { isNoAuth } from '../tcp/utils/decorator/jwt.decorator';
+import { isNoAuth } from '../nest/utils/decorator/jwt.decorator';
 import Store from 'electron-store';
 import { of } from 'rxjs';
 export const store = new Store();
