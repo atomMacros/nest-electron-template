@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body style="width: 100px; height: 100px;">
+		<div class="loading-next">
+			<div class="loading-next-box">
+				<div class="loading-next-box-warp">
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+					<div class="loading-next-box-item"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<style>
+		.loading-next {
+			width: 100%;
+			height: 100%;
+		}
+		.loading-next .loading-next-box {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.loading-next .loading-next-box-warp {
+			width: 80px;
+			height: 80px;
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item {
+			width: 33.333333%;
+			height: 33.333333%;
+			background: var(--el-color-primary);
+			float: left;
+			animation: loading-next-animation 1.2s infinite ease;
+			border-radius: 1px;
+            background: rgb(84, 158, 255);
+            /* background: white; */
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(7) {
+			animation-delay: 0s;
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(4),
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(8) {
+			animation-delay: 0.1s;
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(1),
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(5),
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(9) {
+			animation-delay: 0.2s;
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(2),
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(6) {
+			animation-delay: 0.3s;
+		}
+		.loading-next .loading-next-box-warp .loading-next-box-item:nth-child(3) {
+			animation-delay: 0.4s;
+		}
+		@keyframes loading-next-animation {
+			0%,
+			70%,
+			100% {
+				transform: scale3D(1, 1, 1);
+			}
+			35% {
+				transform: scale3D(0, 0, 1);
+			}
+		}
+
+		.box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100vw;
+			height: 100vh;
+			overflow: hidden;
+		}
+		/* HTML: <div class="loader"></div> */
+		.loader {
+			height: 4px;
+			width: 130px;
+			--c: no-repeat linear-gradient(#6100ee 0 0);
+			background: var(--c), var(--c), #d7b8fc;
+			background-size: 60% 100%;
+			animation: l16 3s infinite;
+		}
+		@keyframes l16 {
+			0% {
+				background-position: -150% 0, -150% 0;
+			}
+			66% {
+				background-position: 250% 0, -150% 0;
+			}
+			100% {
+				background-position: 250% 0, 250% 0;
+			}
+		}
+	</style>
+</html>

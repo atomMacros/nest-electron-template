@@ -1,0 +1,33 @@
+.chart-scrollbar {
+	.chart-warp {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		.chart-warp-bottom {
+			flex: 1;
+			overflow: hidden;
+			display: flex;
+			.big-data-down-center {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				.big-data-down-center-one {
+					height: 100%;
+					padding: 0 7.5px 15px;
+					.big-data-down-center-one-content {
+						height: 100%;
+						background: var(--el-color-white);
+						padding: 15px;
+						border: 1px solid var(--el-border-color-lighter);
+						border-radius: 4px;
+						transition: all ease 0.3s;
+						&:hover {
+							box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+							transition: all ease 0.3s;
+						}
+					}
+				}
+			}
+		}
+	}
+}
